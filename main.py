@@ -1,4 +1,3 @@
-import sys
 import random
 
 
@@ -15,11 +14,12 @@ def generate_random_code(random_response, type_strand):
     code_possibilities_c_t = ["A", "T", "C", "G"]
     random_code = []
     if random_response == "R":
-        for i in range(64):
-            if type_strand == "m":
+        if type_strand == "m":
+            for i in range(72):
                 base = random.choice(code_possibilities_m)
                 random_code.append(base)
-            elif type_strand == "c" or type_strand == "t":
+        elif type_strand == "c" or type_strand == "t":
+            for i in range(72):
                 base = random.choice(code_possibilities_c_t)
                 random_code.append(base)
         return "".join(random_code)
@@ -31,7 +31,7 @@ def convert(type_strand, strand):
     if type_strand == "m":
         for char in strand:
             if char not in ["A", "U", "C", "G"]:
-                sys.exit("Error: Malformed strand")
+                raise ValueError(f"Malformed Strand: {char} not valid")
         return strand
     elif type_strand == "t":
         new_strand = strand[::-1]
@@ -48,7 +48,7 @@ def convert(type_strand, strand):
             elif new_strand_l[i] == "C":
                 new_strand_l[i] = "G"
             else:
-                sys.exit("Error: Malformed strand")
+                raise ValueError(f"Malformed Strand: {new_strand_l[i]} not valid")
         new_strand_s = ''.join(new_strand_l)
         return new_strand_s
     elif type_strand == "c":
@@ -57,7 +57,7 @@ def convert(type_strand, strand):
             if char in ["A", "C", "G", "T"]:
                 new_strand_l.append(char)
             else:
-                sys.exit("Error: Malformed strand")
+                raise ValueError(f"Malformed Strand: {char} not valid")
         for i in range(len(new_strand_l)):
             if new_strand_l[i] == "T":
                 new_strand_l[i] = "U"
@@ -105,32 +105,35 @@ def form_proteins(strand):
                     break
         return proteins
     else:
-        sys.exit("Error: Methionine not found")
+        raise ValueError("Error: Methionine not found")
 
 
 def main():
-    first_strand = input("Enter the original strand ('r' for random strand): ").upper()
-    joined_strand = first_strand.replace(" ", "")
-    strand_type = input("Type of Strand (m, t, c): ").lower()
-
-    while strand_type not in ["m", "t", "c"]:
-        print("Please enter a valid value.")
+    try:
+        first_strand = input("Enter the original strand ('r' for random strand): ").upper()
+        joined_strand = first_strand.replace(" ", "")
         strand_type = input("Type of Strand (m, t, c): ").lower()
 
-    five_to_three = input("Five to Three? (Y/N): ").upper()
+        while strand_type not in ["m", "t", "c"]:
+            print("Please enter a valid value.")
+            strand_type = input("Type of Strand (m, t, c): ").lower()
 
-    while five_to_three not in ["Y", "N"]:
-        print("Please enter a valid value.")
         five_to_three = input("Five to Three? (Y/N): ").upper()
 
-    check_random = generate_random_code(joined_strand, strand_type)
-    prime = five_three(five_to_three, check_random)
-    converted = convert(strand_type, prime)
-    print(f"\nFor the code:\n{check_random}\nYour mRNA strand is:\n{converted}\n")
-    outcome = split(converted)
-    protein = form_proteins(outcome)
-    print("Your proteins are:\n")
-    [print(f"{p}") for p in protein]
+        while five_to_three not in ["Y", "N"]:
+            print("Please enter a valid value.")
+            five_to_three = input("Five to Three? (Y/N): ").upper()
+
+        check_random = generate_random_code(joined_strand, strand_type)
+        prime = five_three(five_to_three, check_random)
+        converted = convert(strand_type, prime)
+        print(f"\nFor the code:\n{check_random}\nYour mRNA strand is:\n{converted}\n")
+        outcome = split(converted)
+        protein = form_proteins(outcome)
+        print("Your proteins are:\n")
+        [print(f"{p}") for p in protein]
+    except ValueError as error:
+        print(error)
 
 
 main()
