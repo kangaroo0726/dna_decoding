@@ -88,9 +88,9 @@ def split(strand):
 
 def form_proteins(strand):
     proteins = []
-    protein_dict = {"AUG": "methionine", ("UUU", "UUC"): "phenylalanine", ("UUA", "UUG", "CUA", "CUU", "CUC", "CUG"):
-        "leucine", ("AUA", "AUU", "AUC"): "isoleucine", ("GUA", "GUU", "GUC", "GUG"): "valine", ("UCA", "UCU", "UCC",
-                                                                                                 "UCG"): "serine",
+    protein_dict = {"AUG": "methionine", ("UUU", "UUC"): "phenylalanine",
+                    ("UUA", "UUG", "CUA", "CUU", "CUC", "CUG"): "leucine", ("AUA", "AUU", "AUC"): "isoleucine",
+                    ("GUA", "GUU", "GUC", "GUG"): "valine", ("UCA", "UCU", "UCC", "UCG"): "serine",
                     ("CCA", "CCU", "CCC", "CCG"): "proline", ("ACA", "ACU", "ACC", "ACG"): "threonine",
                     ("GCA", "GCU", "GCC", "GCG"): "alanine", ("UAU", "UAC"): "tyrosine", ("CAU", "CAC"): "histidine",
                     ("CAA", "CAG"): "glutamine", ("AAU", "AAC"): "asparagine", ("AAA", "AAG"): "lysine",
@@ -103,6 +103,8 @@ def form_proteins(strand):
                 if sequence in key:
                     proteins.append(protein_dict[key])
                     break
+        if "stop" not in proteins:
+            proteins.append("...")
         return proteins
     else:
         raise ValueError("Error: Methionine not found")
@@ -136,4 +138,7 @@ def main():
         print(error)
 
 
-main()
+try:
+    main()
+except KeyboardInterrupt:
+    print("\n\nGoodbye!")
