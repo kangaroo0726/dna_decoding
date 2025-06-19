@@ -1,12 +1,10 @@
-import random
-
-
 def five_three(answer, strand):
     if answer == "Y":
         return strand
     elif answer == "N":
         new_strand = strand[::-1]
         return new_strand
+    return None
 
 
 def convert(type_strand, strand):
@@ -38,6 +36,7 @@ def convert(type_strand, strand):
                 new_strand_l[i] = "U"
         new_strand_s = ''.join(new_strand_l)
         return new_strand_s
+    return None
 
 
 def split(strand):
@@ -85,10 +84,10 @@ def form_proteins(strand):
         raise ValueError("Error: Methionine not found")
 
 
-def read_parse_file(filename):
-    try:
-        with open(filename) as file_in:
-            for line in file_in:
+def main():
+    with open("example_text.txt") as file_in:
+        for line in file_in:
+            try:
                 line = line.strip()
                 line = line.replace(" ", "")
                 joined_strand = line
@@ -99,27 +98,21 @@ def read_parse_file(filename):
                     strand_type = input("Type of Strand (m, t, c): ").lower()
 
                 five_to_three = input("Five to Three? (Y/N): ").upper()
-                
+
                 while five_to_three not in ["Y", "N"]:
                     print("Please enter a valid value.")
                     five_to_three = input("Five to Three? (Y/N): ").upper()
 
                 prime = five_three(five_to_three, joined_strand)
                 converted = convert(strand_type, prime)
-                print(f"\nFor the code:\n{check_random}\nYour mRNA strand is:\n{converted}\n")
+                print(f"\nFor the code:\n{joined_strand}\nYour mRNA strand is:\n{converted}\n")
                 outcome = split(converted)
                 protein = form_proteins(outcome)
                 print("Your proteins are:\n")
                 [print(f"{p}") for p in protein]
-    except FileNotFoundError:
-        print("File has not been found. Please enter a valid filename.")
-
-
-def main():
-    try:
-        read_parse_file("example_text.txt")
-    except ValueError as error:
-        print(error)
+                print("\n")
+            except ValueError as error:
+                print(f"{error}\n")
 
 
 try:
