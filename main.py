@@ -9,24 +9,6 @@ def five_three(answer, strand):
         return new_strand
 
 
-def generate_random_code(random_response, type_strand):
-    code_possibilities_m = ["A", "U", "C", "G"]
-    code_possibilities_c_t = ["A", "T", "C", "G"]
-    random_code = []
-    if random_response == "R":
-        if type_strand == "m":
-            for i in range(72):
-                base = random.choice(code_possibilities_m)
-                random_code.append(base)
-        elif type_strand == "c" or type_strand == "t":
-            for i in range(72):
-                base = random.choice(code_possibilities_c_t)
-                random_code.append(base)
-        return "".join(random_code)
-    else:
-        return random_response
-
-
 def convert(type_strand, strand):
     if type_strand == "m":
         for char in strand:
@@ -103,30 +85,39 @@ def form_proteins(strand):
         raise ValueError("Error: Methionine not found")
 
 
+def read_parse_file(filename):
+    try:
+        with open(filename) as file_in:
+            for line in file_in:
+                line = line.strip()
+                line = line.replace(" ", "")
+                joined_strand = line
+                strand_type = input("Type of Strand (m, t, c): ").lower()
+
+                while strand_type not in ["m", "t", "c"]:
+                    print("Please enter a valid value.")
+                    strand_type = input("Type of Strand (m, t, c): ").lower()
+
+                five_to_three = input("Five to Three? (Y/N): ").upper()
+                
+                while five_to_three not in ["Y", "N"]:
+                    print("Please enter a valid value.")
+                    five_to_three = input("Five to Three? (Y/N): ").upper()
+
+                prime = five_three(five_to_three, joined_strand)
+                converted = convert(strand_type, prime)
+                print(f"\nFor the code:\n{check_random}\nYour mRNA strand is:\n{converted}\n")
+                outcome = split(converted)
+                protein = form_proteins(outcome)
+                print("Your proteins are:\n")
+                [print(f"{p}") for p in protein]
+    except FileNotFound:
+        print("File has not been found. Please enter a valid filename.")
+
+
 def main():
     try:
-        first_strand = input("Enter the original strand ('r' for random strand): ").upper()
-        joined_strand = first_strand.replace(" ", "")
-        strand_type = input("Type of Strand (m, t, c): ").lower()
-
-        while strand_type not in ["m", "t", "c"]:
-            print("Please enter a valid value.")
-            strand_type = input("Type of Strand (m, t, c): ").lower()
-
-        five_to_three = input("Five to Three? (Y/N): ").upper()
-
-        while five_to_three not in ["Y", "N"]:
-            print("Please enter a valid value.")
-            five_to_three = input("Five to Three? (Y/N): ").upper()
-
-        check_random = generate_random_code(joined_strand, strand_type)
-        prime = five_three(five_to_three, check_random)
-        converted = convert(strand_type, prime)
-        print(f"\nFor the code:\n{check_random}\nYour mRNA strand is:\n{converted}\n")
-        outcome = split(converted)
-        protein = form_proteins(outcome)
-        print("Your proteins are:\n")
-        [print(f"{p}") for p in protein]
+        read_parse_file("example_file")
     except ValueError as error:
         print(error)
 
