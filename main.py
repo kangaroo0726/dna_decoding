@@ -35,22 +35,15 @@ def convert(type_strand, strand):
         return strand
     elif type_strand == "t":
         new_strand = strand[::-1]
-        new_strand_l = []
-        for char in new_strand:
-            new_strand_l.append(char)
-        for i in range(len(new_strand_l)):
-            if new_strand_l[i] == "T":
-                new_strand_l[i] = "A"
-            elif new_strand_l[i] == "A":
-                new_strand_l[i] = "U"
-            elif new_strand_l[i] == "G":
-                new_strand_l[i] = "C"
-            elif new_strand_l[i] == "C":
-                new_strand_l[i] = "G"
-            else:
-                raise ValueError(f"Malformed Strand: {new_strand_l[i]} not valid")
-        new_strand_s = ''.join(new_strand_l)
-        return new_strand_s
+        new_strand = list(new_strand)
+        complement_dict = {"T": "A", "A": "U", "G": "C", "C": "G"}
+        for i in range(len(new_strand)):
+            try:
+                new_strand[i] = complement_dict[new_strand[i]]
+            except KeyError:
+                raise ValueError(f"Malformed Strand: {new_strand[i]} not valid")
+        new_strand = ''.join(new_strand)
+        return new_strand
     elif type_strand == "c":
         new_strand_l = []
         for char in strand:
