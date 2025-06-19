@@ -111,7 +111,7 @@ def read_parse_file(filename):
                 protein = form_proteins(outcome)
                 print("Your proteins are:\n")
                 [print(f"{p}") for p in protein]
-    except FileNotFound:
+    except FileNotFoundError:
         print("File has not been found. Please enter a valid filename.")
 
 
