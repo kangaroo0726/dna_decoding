@@ -117,7 +117,7 @@ def read_parse_file(filename):
 
 def main():
     try:
-        read_parse_file("example_file")
+        read_parse_file("example_text.txt")
     except ValueError as error:
         print(error)
 
