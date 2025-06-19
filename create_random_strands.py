@@ -41,7 +41,7 @@ def write_to_file(filename, strand_list):
 
 
 def main():
-  strand_list = choose_strand_type_and_generate_list(500)
+  strand_list = choose_strand_type_and_generate_list(10)
   write_to_file("example_text.txt", strand_list)
 
 
