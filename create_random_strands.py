@@ -37,7 +37,7 @@ def choose_strand_type_and_generate_list(num_entries):
 def write_to_file(filename, strand_list):
   with open(filename, "w") as file_out:
     for strand in strand_list:
-      file_out.write(f"{item}\n")
+      file_out.write(f"{strand}\n")
 
 
 def main():
