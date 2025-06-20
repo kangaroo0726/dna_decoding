@@ -1,3 +1,6 @@
+import create_random_strands as generator
+
+
 def five_three(answer, strand):
     if answer == "Y":
         return strand
@@ -85,6 +88,7 @@ def form_proteins(strand):
 
 
 def main():
+    generator.main()
     with open("example_text.txt") as file_in:
         for line in file_in:
             try:
