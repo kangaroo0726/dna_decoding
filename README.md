@@ -7,7 +7,6 @@ Decodes DNA/mRNA strand and outputs amino acids with respect to their specific c
 This project is meant done with the following constraints:
 - No external libraries to be used in main.py
 - All ideas and applications in this project must come from high school concepts
-- All functions, excluding main, are under 20 line
 
 ---
 
