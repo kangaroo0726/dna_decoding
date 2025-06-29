@@ -1,4 +1,5 @@
 import create_random_strands as generator
+from random import choice
 
 
 def five_three(answer, strand):
@@ -67,7 +68,7 @@ def form_proteins(strand):
     proteins = []
     protein_dict = {"AUG": "methionine", ("UUU", "UUC"): "phenylalanine",
                     ("UUA", "UUG", "CUA", "CUU", "CUC", "CUG"): "leucine", ("AUA", "AUU", "AUC"): "isoleucine",
-                    ("GUA", "GUU", "GUC", "GUG"): "valine", ("UCA", "UCU", "UCC", "UCG"): "serine",
+                    ("GUA", "GUU", "GUC", "GUG"): "valine", ("UCA", "UCU", "UCC", "UCG", "AGC"): "serine",
                     ("CCA", "CCU", "CCC", "CCG"): "proline", ("ACA", "ACU", "ACC", "ACG"): "threonine",
                     ("GCA", "GCU", "GCC", "GCG"): "alanine", ("UAU", "UAC"): "tyrosine", ("CAU", "CAC"): "histidine",
                     ("CAA", "CAG"): "glutamine", ("AAU", "AAC"): "asparagine", ("AAA", "AAG"): "lysine",
@@ -97,17 +98,7 @@ def main():
                 line = line.split(",")
                 joined_strand = line[1]
                 strand_type = line[0]
-
-                while strand_type not in ["m", "t", "c"]:
-                    print("Please enter a valid value.")
-                    strand_type = input("Type of Strand (m, t, c): ").lower()
-
-                five_to_three = input("Five to Three? (Y/N): ").upper()
-
-                while five_to_three not in ["Y", "N"]:
-                    print("Please enter a valid value.")
-                    five_to_three = input("Five to Three? (Y/N): ").upper()
-
+                five_to_three = choice(["Y", "N"])
                 prime = five_three(five_to_three, joined_strand)
                 converted = convert(strand_type, prime)
                 print(f"\nFor the code:\n{joined_strand}\nYour mRNA strand is:\n{converted}\n")
