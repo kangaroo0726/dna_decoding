@@ -34,9 +34,15 @@ def choose_strand_type_and_generate_list(num_entries):
 
 
 def write_to_file(filename, strand_list):
+    current_type = ""
+    possible_types = ["c", "t"]
     with open(filename, "w") as file_out:
         for strand in strand_list:
-            file_out.write(f"{strand}\n")
+            if "U" in strand:
+                current_type = "m"
+            else:
+                current_type = choice(possible_types)
+            file_out.write(f"{current_type},{strand}\n")
 
 
 def main():
