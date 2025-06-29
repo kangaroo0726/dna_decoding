@@ -94,8 +94,9 @@ def main():
             try:
                 line = line.strip()
                 line = line.replace(" ", "")
-                joined_strand = line
-                strand_type = input("Type of Strand (m, t, c): ").lower()
+                line = line.split(",")
+                joined_strand = line[1]
+                strand_type = line[0]
 
                 while strand_type not in ["m", "t", "c"]:
                     print("Please enter a valid value.")
